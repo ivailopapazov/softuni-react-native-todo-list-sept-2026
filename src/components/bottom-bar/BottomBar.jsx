@@ -5,7 +5,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const BOTTOM_APPBAR_HEIGHT = 80;
 const MEDIUM_FAB_HEIGHT = 56;
 
-const BottomBar = () => {
+const BottomBar = ({
+    onOpenCreateTodo,
+}) => {
   const { bottom } = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -28,7 +30,7 @@ const BottomBar = () => {
         mode="flat"
         size="medium"
         icon="plus"
-        onPress={() => {}}
+        onPress={onOpenCreateTodo}
         style={[
           styles.fab,
           { top: (BOTTOM_APPBAR_HEIGHT - MEDIUM_FAB_HEIGHT) / 2 },
