@@ -1,16 +1,23 @@
-import { Modal, Text, TextInput, Button, Surface } from 'react-native-paper';
+import { Modal, Text, TextInput, Button } from 'react-native-paper';
 import { View } from 'react-native';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { TodoContext } from '../../contexts/TodoContext';
 
 const CreateTodo = ({
-    onDismiss,
 }) => {
+    const { addTodo, handleDismiss, showCreateTodo } = useContext(TodoContext);
     const [text, setText] = useState('');
     const containerStyle = { backgroundColor: 'white', padding: 20 };
 
+    const addTodoHandler = () => {
+        addTodo(text);
+        setText('');
+        handleDismiss();
+    };
+
     return (
-        <Modal visible={true} onDismiss={onDismiss} contentContainerStyle={containerStyle}>
+        <Modal visible={showCreateTodo} onDismiss={handleDismiss} contentContainerStyle={containerStyle}>
             <Text>Create a new todo</Text>
 
             <View style={{flexDirection: 'row', gap: 10, justifyContent: 'space-between'}}>
@@ -22,7 +29,7 @@ const CreateTodo = ({
                     onChangeText={text => setText(text)}
                 />
 
-                <Button style={{justifyContent: 'center'}} icon="plus" mode="contained" onPress={() => console.log('Pressed')}>
+                <Button style={{justifyContent: 'center'}} icon="plus" mode="contained" onPress={addTodoHandler}>
                     Add
                 </Button>
             </View>

@@ -1,30 +1,23 @@
 import { View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import TopBar from './components/top-bar/TopBar';
 import BottomBar from './components/bottom-bar/BottomBar';
 import CreateTodo from './components/create-todo/CreateTodo';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { TodoProvider } from './contexts/TodoContext';
 
 export default function App() {
-  const [showCreateTodo, setShowCreateTodo] = useState(true);
-  
-  const handleDismiss = () => {
-    setShowCreateTodo(false);
-  };
-
-  const openCreateTodoHandler = () => {
-    setShowCreateTodo(true);
-  };
-
   return (
     <SafeAreaProvider>
-      <View style={{ flex: 1 }}>
-        <TopBar />
+      <TodoProvider>
+        <View style={{ flex: 1 }}>
+          <TopBar />
 
-        {showCreateTodo && <CreateTodo onDismiss={handleDismiss} />}
+          <CreateTodo />
 
-        <BottomBar onOpenCreateTodo={openCreateTodoHandler} />
-      </View>
+          <BottomBar />
+        </View>
+      </TodoProvider>
     </SafeAreaProvider>
   );
 }
