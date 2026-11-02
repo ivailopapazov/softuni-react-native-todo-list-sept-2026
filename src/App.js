@@ -1,5 +1,6 @@
 import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import TodoList from './todo-list/TodoList';
 
 import TopBar from './components/top-bar/TopBar';
 import BottomBar from './components/bottom-bar/BottomBar';
@@ -14,6 +15,8 @@ export default function App() {
           <TopBar />
 
           <CreateTodo />
+
+          <TodoList />
 
           <BottomBar />
         </View>
