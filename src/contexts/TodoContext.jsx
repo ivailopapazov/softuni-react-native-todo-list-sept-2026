@@ -6,7 +6,14 @@ export const TodoContext = createContext({
     handleDismiss: () => {},
     openCreateTodoHandler: () => {},
     addTodo: (text) => {},
-    toggleTodo: (id) => {}
+    toggleTodo: (id) => {},
+    deleteTodo: (id) => {},
+    mode: 'view',
+    /**
+     * @param {"view"|"edit"|"delete"} mode 
+     */
+    switchMode: (mode = 'view') => {},
+    editTodo: (id) => {},
 });
 
 export function TodoProvider({ children }) {
@@ -28,6 +35,8 @@ export function TodoProvider({ children }) {
         }
     ]);
     const [showCreateTodo, setShowCreateTodo] = useState(false);
+    const [mode, setMode] = useState('view');
+    const [selectedTodo, setSelectedTodo] = useState(null);
 
     const handleDismiss = () => {
         setShowCreateTodo(false);
@@ -46,6 +55,18 @@ export function TodoProvider({ children }) {
     };
 
     const addTodo = (text) => {
+        // edit existing todo if selectedTodo is set
+        if (selectedTodo) {
+            setTodos(prevTodos =>
+                prevTodos.map(todo =>
+                    todo.id === selectedTodo.id ? { ...todo, text } : todo
+                )
+            );
+            setSelectedTodo(null);
+            return;
+        }
+
+        // create a new todo if no selectedTodo is set
         const newTodo = {
             id: uuid.v4(),
             text,
@@ -55,6 +76,25 @@ export function TodoProvider({ children }) {
         setTodos(prevTodos => [...prevTodos, newTodo]);
     };
 
+    const deleteTodo = (id) => {
+        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+    };
+
+    const editTodo = (id) => {
+        setSelectedTodo(todos.find(todo => todo.id === id));
+        setShowCreateTodo(true);
+    }
+
+    const switchMode = (newMode = 'view') => {
+        const validModes = ['view', 'edit', 'delete'];
+
+        if (!validModes.includes(newMode)) {
+            return;
+        }
+
+        setMode(newMode === mode ? 'view' : newMode);
+    };
+
     const value = {
         showCreateTodo,
         handleDismiss,
@@ -62,6 +102,11 @@ export function TodoProvider({ children }) {
         todos,
         addTodo,
         toggleTodo,
+        deleteTodo,
+        mode,
+        switchMode,
+        editTodo,
+        selectedTodo,
     };
 
     return (

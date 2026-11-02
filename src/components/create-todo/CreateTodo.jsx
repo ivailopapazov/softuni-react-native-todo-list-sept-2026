@@ -1,14 +1,20 @@
 import { Modal, Text, TextInput, Button } from 'react-native-paper';
 import { View, Keyboard } from 'react-native';
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { TodoContext } from '../../contexts/TodoContext';
 
 const CreateTodo = ({
 }) => {
-    const { addTodo, handleDismiss, showCreateTodo } = useContext(TodoContext);
+    const { addTodo, handleDismiss, showCreateTodo, selectedTodo } = useContext(TodoContext);
     const [text, setText] = useState('');
     const containerStyle = { backgroundColor: 'white', padding: 20 };
+
+    useEffect(() => {
+        if (selectedTodo) {
+            setText(selectedTodo.text);
+        }
+    }, [selectedTodo]);
 
     const addTodoHandler = () => {
         addTodo(text);
