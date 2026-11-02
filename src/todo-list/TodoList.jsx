@@ -4,7 +4,7 @@ import { TodoContext } from "../contexts/TodoContext";
 import TodoItem from "./todo-item/TodoItem";
 
 export default function TodoList() {
-    const { todos } = useContext(TodoContext);
+    const { todos, toggleTodo } = useContext(TodoContext);
 
     return (
         <List.Section>
@@ -12,6 +12,7 @@ export default function TodoList() {
                 <TodoItem
                     key={todo.id}
                     {...todo}
+                    onPress={() => toggleTodo(todo.id)}
                 />
             ))}
         </List.Section>
